@@ -30,6 +30,11 @@ function isCompFormatError(...input) {
   }
 }
 
+function RoundNum(num){
+  const digit = 15;
+  return Math.round(num * 10 ** digit) / 10 ** digit;
+}
+
 function isComplex(num) {
   //複素数判定
   return (Number.isFinite(num) || typeof num == "object" && Number.isFinite(num.re) && Number.isFinite(num.im));
@@ -72,7 +77,7 @@ function ImProduct(...comp) {
   let result = Complex(1);
   for (const item of comp) {
     const [a, b, c, d] = [result.re, result.im, Complex(item).re, Complex(item).im];
-    result = Complex(a * c - b * d, a * d + b * c);
+    result = Complex(RoundNum(a * c - b * d), RoundNum(a * d + b * c));
   }
   return result;
 }
@@ -81,7 +86,7 @@ function ImDiv(numerator, denominator) {
   //複素数の商
   isCompFormatError(numerator, denominator);
   const [a, b, c, d] = [Complex(numerator).re, Complex(numerator).im, Complex(denominator).re, Complex(denominator).im];
-  return Complex((a * c + b * d) / (c ** 2 + d ** 2), -(a * d - b * c) / (c ** 2 + d ** 2));
+  return Complex(RoundNum((a * c + b * d) / (c ** 2 + d ** 2)), RoundNum(-(a * d - b * c) / (c ** 2 + d ** 2)));
 }
 
 function ImAbs(comp) {
@@ -96,7 +101,7 @@ function ImExp(z) {
   isCompFormatError(z);
   z = Complex(z);
   const [a, b] = [z.re, z.im];
-  return Complex(Math.exp(a) * Math.cos(b) + 2 - 2, Math.exp(a) * Math.sin(b) + 2 - 2);
+  return Complex(RoundNum(Math.exp(a) * Math.cos(b)), RoundNum(Math.exp(a) * Math.sin(b)));
 }
 
 function ImCos(z) {
@@ -130,10 +135,8 @@ function ImPower(comp, int) {
   //複素数の整数乗
   isCompFormatError(comp);
   if (!Number.isInteger) throw Error("Exponent is not an integer.");
-  let result = Complex(1);
   let arr = new Array(Math.abs(int)).fill(int > 0 ? comp : ImDiv(1, comp));
-  result = ImProduct(result, ...arr);
-  return result;
+  return ImProduct(Complex(1), ...arr);
 }
 
 function ImSqrt(comp) {
