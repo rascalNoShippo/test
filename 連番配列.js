@@ -1,11 +1,14 @@
 function ArraySerial(start, end) {
-  if (end === undefined){
-    end = start;
-    start = 1;
+  const argGiven = arguments.length;
+  const argDefault = ArraySerial.length;
+	if (arguments.length !== ArraySerial.length) {
+    throw Error(`Wrong number of arguments (given ${argGiven}, expected ${argDefault}).`);
   }
-  if (!Number.isInteger(start) || !Number.isInteger(end)) throw Error("Parameter is not an integer.");
+  if (!Number.isInteger(start) || !Number.isInteger(end)) {
+    throw Error("Argument is not an integer.");
+  }
   return new Array(Math.abs(end - start) + 1).fill().map((e, i) => start + i * Math.sign(end - start));
 }
 
 
-ArraySerial(2,7)
+ArraySerial(2)
