@@ -30,9 +30,13 @@ function isCompFormatError(...input) {
   }
 }
 
-function RoundNum(num){
+function RoundNum(comp) {
+  isCompFormatError(comp);
   const digit = 15;
-  return Math.round(num * 10 ** digit) / 10 ** digit;
+  function Round(num) {
+    return String(num).match(/0{10}|9{10}/) || Math.abs(num) < 10 ** (-digit) ? Math.round(num * 10 ** digit) / 10 ** digit : num;
+  }
+  return Complex(Round(comp.re), Round(comp.im));
 }
 
 function isComplex(num) {
@@ -68,7 +72,7 @@ function ImSub(comp1, comp2) {
   isCompFormatError(comp1, comp2);
   comp1 = Complex(comp1);
   comp2 = Complex(comp2);
-  return Complex(comp1.re - comp2.re, comp1.im - comp2.im);
+  return RoundNum(Complex(comp1.re - comp2.re, comp1.im - comp2.im));
 }
 
 function ImProduct(...comp) {
@@ -77,7 +81,7 @@ function ImProduct(...comp) {
   let result = Complex(1);
   for (const item of comp) {
     const [a, b, c, d] = [result.re, result.im, Complex(item).re, Complex(item).im];
-    result = Complex(RoundNum(a * c - b * d), RoundNum(a * d + b * c));
+    result = RoundNum(Complex(a * c - b * d, a * d + b * c));
   }
   return result;
 }
@@ -86,7 +90,7 @@ function ImDiv(numerator, denominator) {
   //複素数の商
   isCompFormatError(numerator, denominator);
   const [a, b, c, d] = [Complex(numerator).re, Complex(numerator).im, Complex(denominator).re, Complex(denominator).im];
-  return Complex(RoundNum((a * c + b * d) / (c ** 2 + d ** 2)), RoundNum(-(a * d - b * c) / (c ** 2 + d ** 2)));
+  return RoundNum(Complex((a * c + b * d) / (c ** 2 + d ** 2), -(a * d - b * c) / (c ** 2 + d ** 2)));
 }
 
 function ImAbs(comp) {
@@ -101,7 +105,7 @@ function ImExp(z) {
   isCompFormatError(z);
   z = Complex(z);
   const [a, b] = [z.re, z.im];
-  return Complex(RoundNum(Math.exp(a) * Math.cos(b)), RoundNum(Math.exp(a) * Math.sin(b)));
+  return RoundNum(Complex(Math.exp(a) * Math.cos(b), Math.exp(a) * Math.sin(b)));
 }
 
 function ImCos(z) {
@@ -136,7 +140,7 @@ function ImPower(comp, int) {
   isCompFormatError(comp);
   if (!Number.isInteger) throw Error("Exponent is not an integer.");
   let arr = new Array(Math.abs(int)).fill(int > 0 ? comp : ImDiv(1, comp));
-  return ImProduct(Complex(1), ...arr);
+  return RoundNum(ImProduct(Complex(1), ...arr));
 }
 
 function ImSqrt(comp) {
@@ -148,4 +152,3 @@ function ImSqrt(comp) {
   const b = d / Math.sqrt(2 * (c + Math.sqrt(c ** 2 + d ** 2)));
   return Complex(a, b);
 }
-
