@@ -1,6 +1,5 @@
 function ColNo(num) {
   const alphabet = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  debugger	
   if (Number.isInteger(+num) && +num > 0) {
     //整数からアルファベットに変換
     num = +num;
@@ -29,7 +28,7 @@ function ColNo(num) {
       result += 26 ** i * alphabet.indexOf(num[digit - i])
     }
     return result;
-  } else throw Error("An invalid argument.");
+  } else throw TypeError("An invalid argument.");
 }
 
 ColNo("")
