@@ -145,7 +145,7 @@ function ImPower(comp, int) {
 }
 
 function ImSqrt(comp) {
-  //複素数の平方根のうち実部が正のもの
+  //複素数の平方根のうち実部が非負のもの
   isCompFormatError(comp);
   comp = Complex(comp);
   //a + bi = √(c + di) とする
