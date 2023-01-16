@@ -28,7 +28,7 @@ function ColNo(num) {
       result += 26 ** i * alphabet.indexOf(num[digit - i])
     }
     return result;
-  } else throw TypeError("An invalid argument.");
+  } else throw TypeError("A malformed argument.");
 }
 
 ColNo("")
