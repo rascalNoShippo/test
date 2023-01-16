@@ -7,7 +7,7 @@ function ColNo(num) {
     let i = 0
     let exp = [];
     let result = "";
-    do { //26進法での桁数を計算 (i)
+    do { //26進法での桁数を計算 (公比26の等比級数)
       exp.push(1);
     } while (num >= (26 ** (++i + 1) - 1) / 25);
     //各桁は必ず1(A)以上なので、各桁1の数を引く
