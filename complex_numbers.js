@@ -138,7 +138,8 @@ function ImTan(z) {
 function ImPower(comp, int) {
   //複素数の整数乗
   isCompFormatError(comp);
-  if (!Number.isInteger) throw Error("Exponent is not an integer.");
+  comp = Complex(comp);
+  if (!Number.isInteger(int)) throw Error("Exponent is not an integer.");
   let arr = new Array(Math.abs(int)).fill(int > 0 ? comp : ImDiv(1, comp));
   return RoundNum(ImProduct(Complex(1), ...arr));
 }
@@ -146,9 +147,10 @@ function ImPower(comp, int) {
 function ImSqrt(comp) {
   //複素数の平方根のうち実部が正のもの
   isCompFormatError(comp);
+  comp = Complex(comp);
   //a + bi = √(c + di) とする
   const [c, d] = [comp.re, comp.im];
   const a = Math.sqrt((c + Math.sqrt(c ** 2 + d ** 2)) / 2);
-  const b = d / Math.sqrt(2 * (c + Math.sqrt(c ** 2 + d ** 2)));
+  const b = c <= 0 && d === 0 ? Math.sqrt(-c) + 0 : d / Math.sqrt(2 * (c + Math.sqrt(c ** 2 + d ** 2)));
   return Complex(a, b);
 }
