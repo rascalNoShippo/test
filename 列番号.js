@@ -25,10 +25,10 @@ function ColNo(num) {
     let result = 0;
     num = " " + num;
     for (let i = digit - 1; i >= 0; i--) {
-      result += 26 ** i * alphabet.indexOf(num[digit - i])
+      result += 26 ** i * alphabet.indexOf(num[digit - i].toUpperCase());
     }
     return result;
   } else throw TypeError("A malformed argument.");
 }
 
-ColNo("")
+console.log(ColNo(15));
