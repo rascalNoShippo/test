@@ -10,7 +10,7 @@ function frequencyToNote(frequency, freqA4 = 440) {
   const noteNames = ["C", "C♯", "D", "E♭", "E", "F", "F♯", "G", "A♭", "A", "B♭", "B"];
   const freqNoteName = noteNames[Math.floor(mod(pitch + 50, 1200) / 100)];
   const pitchDeviation = mod(pitch + 50, 100) - 50;
-  const octave = Math.floor(pitch / 1200) + 4;
+  const octave = Math.floor((pitch + 50) / 1200) + 4;
   return `${freqNoteName}${octave} ${pitchDeviation >= 0 ? "+" : ""}${pitchDeviation}`;
 }
 
@@ -21,4 +21,4 @@ function mod(dividend, divisor) {
   return dividend % divisor;
 }
 
-console.log(frequencyToNote(420))
+console.log(frequencyToNote(660))
